@@ -1,0 +1,9 @@
+spring:
+  main:
+    jackson:
+      property-naming-strategy: SNAKE_CASE
+app:
+  algorithm: "RSA"
+  publicKeyPath: "static/public_key.pem"
+  privateKeyPath: "static/private_key_pkcs8.pem"
+  jwksPath: "static/jwks.json"
