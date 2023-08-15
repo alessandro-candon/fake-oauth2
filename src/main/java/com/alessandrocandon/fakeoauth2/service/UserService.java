@@ -2,7 +2,6 @@ package com.alessandrocandon.fakeoauth2.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-
 import java.util.Map;
 
 public class UserService {
@@ -15,6 +14,7 @@ public class UserService {
     public UserService() {
         user = JsonNodeFactory.instance.objectNode();
     }
+
     public JsonNode getUser() {
         return user;
     }

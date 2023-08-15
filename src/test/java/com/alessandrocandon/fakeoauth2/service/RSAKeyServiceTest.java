@@ -1,14 +1,13 @@
 package com.alessandrocandon.fakeoauth2.service;
 
-import com.alessandrocandon.fakeoauth2.AppProperties;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
+import com.alessandrocandon.fakeoauth2.AppProperties;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class RSAKeyServiceTest {
 
@@ -18,12 +17,12 @@ class RSAKeyServiceTest {
 
     @BeforeEach
     void setUp() throws NoSuchAlgorithmException {
-        this.appProperties = new AppProperties(
-                "RSA",
-                "public_key.pem",
-                "private_key_pkcs8.pem",
-                "jwks.json"
-        );
+        this.appProperties =
+                new AppProperties(
+                        "RSA",
+                        "static/public_key.pem",
+                        "static/private_key_pkcs8.pem",
+                        "static/jwks.json");
         this.rsaKeyService = new RSAKeyService(appProperties);
     }
 

@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(produces = "application/json")
 public class UserInfoController {
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     @PostMapping("/idp/userinfo.openid")
     public void post(@RequestBody JsonNode rawUser) {

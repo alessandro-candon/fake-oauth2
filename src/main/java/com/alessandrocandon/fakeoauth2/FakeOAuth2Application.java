@@ -10,19 +10,18 @@ import org.springframework.context.annotation.Bean;
 @ConfigurationPropertiesScan
 public class FakeOAuth2Application {
 
-	private final AppProperties appProperties;
+    private final AppProperties appProperties;
 
-	public FakeOAuth2Application(AppProperties appProperties) {
-		this.appProperties = appProperties;
-	}
+    public FakeOAuth2Application(AppProperties appProperties) {
+        this.appProperties = appProperties;
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(FakeOAuth2Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FakeOAuth2Application.class, args);
+    }
 
-	@Bean
-	public UserService get() {
-		return new UserService();
-	}
-
+    @Bean
+    public UserService get() {
+        return new UserService();
+    }
 }

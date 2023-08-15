@@ -25,17 +25,22 @@ public class JwtService {
 
         this.algorithm = algorithm;
         this.headers = headers;
-        this.payload = JsonNodeFactory.instance.objectNode();;
+        this.payload = JsonNodeFactory.instance.objectNode();
+        ;
     }
 
     public JwtToken getToken() {
-        String jwt = JWT.create()
-                .withHeader(headers)
-                .withPayload(payload.toPrettyString())
-                .sign(algorithm);
+        String jwt =
+                JWT.create()
+                        .withHeader(headers)
+                        .withPayload(payload.toPrettyString())
+                        .sign(algorithm);
 
-        Long exp = payload.findValue("exp") != null ? payload.get("exp").asInt() : Instant.now().getEpochSecond();
+        Long exp =
+                payload.findValue("exp") != null
+                        ? payload.get("exp").asInt()
+                        : Instant.now().getEpochSecond();
         // todo : we can add a fake refresh token to return a real token.
-        return new JwtToken(jwt,  exp);
+        return new JwtToken(jwt, exp);
     }
 }
