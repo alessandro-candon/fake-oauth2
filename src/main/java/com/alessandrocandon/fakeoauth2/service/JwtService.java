@@ -3,33 +3,20 @@ package com.alessandrocandon.fakeoauth2.service;
 import com.alessandrocandon.fakeoauth2.dto.JwtToken;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import java.time.Instant;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JwtService {
 
-    private final Algorithm algorithm;
-    private final Map<String, Object> headers;
-    private final JsonNode payload;
+    @Autowired UserService userService;
 
-    public JwtService(Algorithm algorithm, Map<String, Object> headers, JsonNode payload) {
+    public JwtToken getToken(Algorithm algorithm, Map<String, Object> headers) {
 
-        this.algorithm = algorithm;
-        this.headers = headers;
-        this.payload = payload;
-    }
+        var payload = userService.getJwtPayload();
 
-    public JwtService(Algorithm algorithm, Map<String, Object> headers) {
-
-        this.algorithm = algorithm;
-        this.headers = headers;
-        this.payload = JsonNodeFactory.instance.objectNode();
-        ;
-    }
-
-    public JwtToken getToken() {
         String jwt =
                 JWT.create()
                         .withHeader(headers)

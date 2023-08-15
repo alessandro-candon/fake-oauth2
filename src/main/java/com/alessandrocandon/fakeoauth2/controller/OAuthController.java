@@ -23,6 +23,8 @@ public class OAuthController {
 
     @Autowired private UserService userService;
 
+    @Autowired private JwtService jwtService;
+
     @GetMapping(path = "/as/token.oauth2")
     public JwtToken token() {
 
@@ -33,9 +35,7 @@ public class OAuthController {
 
         Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        var jwtService = new JwtService(algorithm, headers, userService.getJwtPayload());
-
-        return jwtService.getToken();
+        return jwtService.getToken(algorithm, headers);
     }
 
     @PostMapping(path = "/as/token.oauth2/payload")

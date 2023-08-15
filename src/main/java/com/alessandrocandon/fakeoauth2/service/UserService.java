@@ -1,33 +1,58 @@
 package com.alessandrocandon.fakeoauth2.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.HashMap;
 import java.util.Map;
 
 public class UserService {
 
+    public static final String USER_PAYLOAD_KEY = "user_key_id";
+    private static int userKeyIndex;
     private static JsonNode jwtPayload;
-    private static JsonNode user;
-
-    private static Map<String, JsonNode> userByJwt;
+    private static final Map<Integer, JsonNode> userWithKey = new HashMap<>();
 
     public UserService() {
-        user = JsonNodeFactory.instance.objectNode();
+        var emptyNode = JsonNodeFactory.instance.objectNode();
+        userKeyIndex = 0;
+        setUser(emptyNode);
+        jwtPayload = emptyNode;
     }
 
-    public JsonNode getUser() {
-        return user;
+    public JsonNode getUser(Integer userKeyIndex) {
+        return userWithKey.get(userKeyIndex);
+    }
+
+    public JsonNode getLastUser() {
+        return userWithKey.get(getCurrentUserKey());
+    }
+
+    public int getCurrentUserKey() {
+        // because is the last user setted
+        return userKeyIndex - 1;
+    }
+
+    public JsonNode getUserByJwtPayload(String jwt) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jwtPayload = mapper.readTree(jwt);
+        int userKey = jwtPayload.get(USER_PAYLOAD_KEY).asInt();
+        return userWithKey.get(userKey);
     }
 
     public void setUser(JsonNode user) {
-        UserService.user = user;
+        userWithKey.put(userKeyIndex, user);
+        userKeyIndex++;
     }
 
     public JsonNode getJwtPayload() {
         return jwtPayload;
     }
 
-    public void setJwtPayload(JsonNode jwtPayload) {
-        UserService.jwtPayload = jwtPayload;
+    public void setJwtPayload(JsonNode payload) {
+        ((ObjectNode) payload).put(UserService.USER_PAYLOAD_KEY, getCurrentUserKey());
+        UserService.jwtPayload = payload;
     }
 }

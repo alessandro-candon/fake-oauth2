@@ -19,12 +19,17 @@ import mockwebserver3.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class JwtServiceTest {
 
     private IKeyService rsaKeyService;
 
     static MockWebServer mockBackEnd;
+
+    @Autowired private JwtService jwtService;
 
     @BeforeEach
     void setUp() throws NoSuchAlgorithmException, IOException {
@@ -53,8 +58,7 @@ class JwtServiceTest {
 
         Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        var jwtService = new JwtService(algorithm, headers);
-        JwtToken jwtToken = jwtService.getToken();
+        JwtToken jwtToken = jwtService.getToken(algorithm, headers);
 
         assertInstanceOf(JwtToken.class, jwtToken);
     }
@@ -74,8 +78,7 @@ class JwtServiceTest {
 
         Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        var jwtService = new JwtService(algorithm, headers);
-        JwtToken jwtToken = jwtService.getToken();
+        JwtToken jwtToken = jwtService.getToken(algorithm, headers);
 
         DecodedJWT jwt = JWT.decode(jwtToken.accessToken());
         JwkProvider provider = new UrlJwkProvider(mockBackEnd.url("/").toString());
