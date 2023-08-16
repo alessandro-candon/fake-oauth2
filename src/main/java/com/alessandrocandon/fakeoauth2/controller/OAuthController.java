@@ -13,6 +13,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(produces = "application/json")
@@ -28,6 +30,7 @@ public class OAuthController {
     @GetMapping(path = "/as/token.oauth2")
     public JwtToken token() {
 
+        // TODO:  maybe move this on RSAKey Service
         Algorithm algorithm =
                 Algorithm.RSA256(
                         (RSAPublicKey) rsaKeyService.getPublic(),
@@ -36,6 +39,16 @@ public class OAuthController {
         Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
         return jwtService.getToken(algorithm, headers);
+    }
+
+    @GetMapping(path = "/as/authorization.oauth2")
+    public RedirectView redirect(@RequestParam String redirectUri, @RequestParam String state) {
+        var redirect =
+                UriComponentsBuilder.fromUriString(redirectUri)
+                        .queryParam("state", state)
+                        .queryParam("code", "random_fake_code")
+                        .toUriString();
+        return new RedirectView(redirect, false, true);
     }
 
     @PostMapping(path = "/as/token.oauth2/payload")
