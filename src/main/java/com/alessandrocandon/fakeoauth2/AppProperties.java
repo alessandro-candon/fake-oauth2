@@ -5,4 +5,4 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("app")
 public record AppProperties(
-        String algorithm, String publicKeyPath, String privateKeyPath, String jwksPath) {}
+        String algorithm, String hash, String publicKeyPath, String privateKeyPath, String jwksPath) {}

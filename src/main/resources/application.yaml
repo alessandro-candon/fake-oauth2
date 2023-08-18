@@ -3,7 +3,8 @@ spring:
     jackson:
       property-naming-strategy: SNAKE_CASE
 app:
-  algorithm: "RS256"
+  algorithm: "RSA"
+  hash: "RSA256"
   publicKeyPath: "static/public_key.pem"
   privateKeyPath: "static/private_key_pkcs8.pem"
   jwksPath: "static/jwks.json"

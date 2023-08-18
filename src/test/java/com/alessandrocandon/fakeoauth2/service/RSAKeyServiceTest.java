@@ -20,6 +20,7 @@ class RSAKeyServiceTest {
         this.appProperties =
                 new AppProperties(
                         "RSA",
+                        "RSA256",
                         "static/public_key.pem",
                         "static/private_key_pkcs8.pem",
                         "static/jwks.json");

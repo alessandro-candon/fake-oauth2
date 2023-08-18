@@ -1,5 +1,6 @@
 package com.alessandrocandon.fakeoauth2;
 
+import com.alessandrocandon.fakeoauth2.dictionary.AllowedAlgorithm;
 import com.alessandrocandon.fakeoauth2.service.IKeyService;
 import com.alessandrocandon.fakeoauth2.service.RSAKeyService;
 import com.alessandrocandon.fakeoauth2.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.security.NoSuchAlgorithmException;
+
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
@@ -41,10 +43,10 @@ public class FakeOAuth2Application {
         };
     }
 
-    @Bean
+    @Bean(name = "fakeoauth2_ikeyservice")
     public IKeyService istantiateIKeyService() throws NoSuchAlgorithmException {
         switch (appProperties.algorithm()) {
-            case "RSA":
+            case AllowedAlgorithm.RSA:
                 return new RSAKeyService(appProperties);
             default:
                 throw new RuntimeException("This algorithm is not supported");
