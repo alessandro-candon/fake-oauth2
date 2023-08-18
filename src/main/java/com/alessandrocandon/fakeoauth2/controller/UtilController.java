@@ -2,17 +2,16 @@ package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping(produces = "application/json")
 public class UtilController {
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
+
     @GetMapping("/userinfo")
     public Map<Integer, JsonNode> getAll() {
         return userService.getAllUsers();

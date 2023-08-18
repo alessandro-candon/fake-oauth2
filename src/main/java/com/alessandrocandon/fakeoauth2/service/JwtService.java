@@ -4,7 +4,6 @@ import com.alessandrocandon.fakeoauth2.dto.JwtToken;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;

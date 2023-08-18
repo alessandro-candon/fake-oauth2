@@ -6,7 +6,6 @@ import com.alessandrocandon.fakeoauth2.service.RSAKeyService;
 import com.alessandrocandon.fakeoauth2.service.UserService;
 import com.alessandrocandon.fakeoauth2.util.FileUtil;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.fasterxml.jackson.databind.JsonNode;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
@@ -43,7 +42,8 @@ public class OAuthController {
     }
 
     @GetMapping(path = "/as/authorization.oauth2")
-    public RedirectView redirect(@RequestParam("redirect_uri") String redirectUri, @RequestParam("state") String state) {
+    public RedirectView redirect(
+            @RequestParam("redirect_uri") String redirectUri, @RequestParam("state") String state) {
         var redirect =
                 UriComponentsBuilder.fromUriString(redirectUri)
                         .queryParam("state", state)
