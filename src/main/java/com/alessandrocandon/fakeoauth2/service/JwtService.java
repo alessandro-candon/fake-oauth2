@@ -6,14 +6,12 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
 
-    @Autowired
-    @Qualifier("fakeoauth2_ikeyservice") IKeyService iKeyService;
+    @Autowired IKeyService iKeyService;
 
     @Autowired UserService userService;
 

@@ -41,7 +41,7 @@ public class FakeOAuth2Application {
         };
     }
 
-    @Bean(name = "fakeoauth2_ikeyservice")
+    @Bean
     public IKeyService istantiateIKeyService() throws NoSuchAlgorithmException {
         switch (appProperties.algorithm()) {
             case AllowedAlgorithm.RSA:
