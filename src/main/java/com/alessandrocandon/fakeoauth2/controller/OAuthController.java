@@ -2,12 +2,7 @@ package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.dto.JwtToken;
 import com.alessandrocandon.fakeoauth2.service.JwtService;
-import com.alessandrocandon.fakeoauth2.service.RSAKeyService;
-import com.alessandrocandon.fakeoauth2.service.UserService;
 import com.alessandrocandon.fakeoauth2.util.FileUtil;
-import com.auth0.jwt.algorithms.Algorithm;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

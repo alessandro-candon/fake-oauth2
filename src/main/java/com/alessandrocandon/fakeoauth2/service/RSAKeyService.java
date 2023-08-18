@@ -4,6 +4,7 @@ import com.alessandrocandon.fakeoauth2.AppProperties;
 import com.alessandrocandon.fakeoauth2.dictionary.AllowedAlgorithm;
 import com.alessandrocandon.fakeoauth2.dictionary.AllowedHash;
 import com.alessandrocandon.fakeoauth2.util.FileUtil;
+import com.auth0.jwt.algorithms.Algorithm;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
@@ -12,8 +13,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-
-import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -35,12 +34,9 @@ public class RSAKeyService implements IKeyService {
     }
 
     public Algorithm getAlgorithm() {
-        switch(appProperties.hash()) {
+        switch (appProperties.hash()) {
             case AllowedHash.RSA256:
-                return Algorithm.RSA256(
-                        this.getPublic(),
-                        this.getPrivate()
-                );
+                return Algorithm.RSA256(this.getPublic(), this.getPrivate());
             default:
                 throw new RuntimeException("Not HASH algorithm allowed");
         }
