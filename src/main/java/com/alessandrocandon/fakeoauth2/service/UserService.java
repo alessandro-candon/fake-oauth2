@@ -16,10 +16,8 @@ public class UserService {
     private static final Map<Integer, JsonNode> userWithKey = new HashMap<>();
 
     public UserService() {
-        var emptyNode = JsonNodeFactory.instance.objectNode();
-        userKeyIndex = 0;
-        setUser(emptyNode);
-        jwtPayload = emptyNode;
+        initUsers();
+        initJwtPayload();
     }
 
     public JsonNode getUser(Integer userKeyIndex) {
@@ -42,6 +40,10 @@ public class UserService {
         return userWithKey.get(userKey);
     }
 
+    public Map<Integer, JsonNode> getAllUsers() {
+        return userWithKey;
+    }
+
     public void setUser(JsonNode user) {
         userWithKey.put(userKeyIndex, user);
         userKeyIndex++;
@@ -54,5 +56,15 @@ public class UserService {
     public void setJwtPayload(JsonNode payload) {
         ((ObjectNode) payload).put(UserService.USER_PAYLOAD_KEY, getCurrentUserKey());
         UserService.jwtPayload = payload;
+    }
+
+    public void initUsers() {
+        userKeyIndex = 0;
+        userWithKey.clear();
+        setUser(JsonNodeFactory.instance.objectNode());
+    }
+
+    public void initJwtPayload() {
+        jwtPayload = JsonNodeFactory.instance.objectNode();
     }
 }

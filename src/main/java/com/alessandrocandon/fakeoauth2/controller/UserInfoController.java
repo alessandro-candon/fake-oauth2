@@ -1,5 +1,6 @@
 package com.alessandrocandon.fakeoauth2.controller;
 
+import com.alessandrocandon.fakeoauth2.service.JwtService;
 import com.alessandrocandon.fakeoauth2.service.UserService;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,11 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Map;
+
 @RestController
 @RequestMapping(produces = "application/json")
 public class UserInfoController {
 
     @Autowired private UserService userService;
+    @Autowired private JwtService jwtService;
 
     @PostMapping("/idp/userinfo.openid")
     public void post(@RequestBody JsonNode rawUser) {
@@ -20,9 +26,9 @@ public class UserInfoController {
     }
 
     @GetMapping("/idp/userinfo.openid")
-    public JsonNode get(@RequestHeader(HttpHeaders.AUTHORIZATION) String token)
+    public JsonNode get(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token)
             throws JsonProcessingException {
-        String payload = JWT.decode(token).getPayload();
-        return userService.getUserByJwtPayload(payload);
+        var jwtPayload = jwtService.getDecodedPayload(token);
+        return userService.getUserByJwtPayload(jwtPayload);
     }
 }

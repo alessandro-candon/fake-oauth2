@@ -45,3 +45,39 @@ This tool generate a jwt and serve it with also all keys.
 Actually the only protocol implemented is RSA but you can implement wich protocl you wnat.
 
 User, you can set it with all props, sending a request to `user` path, we use a in memory store.
+
+If you want to make a test with jwt payload and user payload you shoud make the calls in this way :
+
+Create the User:
+```shell
+curl --location 'http://localhost:8080/idp/userinfo.openid' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "entryUUID": "bc05b201-47a3-344f-bbb4-09f9403d7e76"
+}'
+```
+
+Create the payload for the jwt with inside the user_id:
+```shell
+curl --location 'http://localhost:8080/as/token.oauth2/payload' \
+--header 'Content-Type: application/json' \
+--data '{
+  "uuid": "xxxxxxx-47a3-344f-bbb4-xxxxxx"
+}'
+```
+
+Retrieve the jwt:
+```shell
+curl --location --request POST 'http://localhost:8080/as/token.oauth2'
+```
+
+Get user of generated token:
+```shell
+curl --location 'http://localhost:8080/idp/userinfo.openid' \
+--header 'Authorization: Bearer ${jwt_of_prev_call}'
+```
+
+Get list of all users in-memory:
+```shell
+curl --location 'http://localhost:8080/userinfo'
+```

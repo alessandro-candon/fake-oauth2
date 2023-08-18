@@ -87,4 +87,12 @@ class JwtServiceTest {
 
         algorithmOfJwk.verify(jwt);
     }
+
+    @Test
+    void getDecodedPayload() {
+        var tokenPayloadString = jwtService.getDecodedPayload("Bearer eyJraWQiOiJNQUlOIiwicGkuYXRtIjoiNSIsImFsZyI6IlJTMjU2IiwidHlwIjoiSldUIn0.eyJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIl0sImF1dGhvcml6YXRpb25fZGV0YWlscyI6W10sImNsaWVudF9pZCI6Im15Y2lkIiwiaXNzIjoiZXhhbXBsZS5vcmciLCJqdGkiOiIxMjMiLCJzdWIiOiJhbGVzc2FuZHJvLWNhbmRvbiIsInVpZCI6ImFsZXNzYW5kcm8tY2FuZG9uIiwib3JpZ2luIjoiY29ycG9yYXRlIiwiaWF0IjoxNjkyMDI1MDU5LCJ1dWlkIjoieHh4eHh4eC00N2EzLTM0NGYtYmJiNC14eHh4eHgiLCJ1c2VyX2tleV9pZCI6MH0.rrK6SHgWzlQFAS4WAP9jnSfzmvWveCXYsiiRllyURkxqwC08Dxjf7oSGY8bZvSlCjOqMc7eCZZE9R5atQBy3RYcpKAWS4kCXatJCAvnxjEtYLH0RyzoGFQrHkhtX-_sH-Zu-7FPogjcBl5Z0jiBQ46HOHPJn8TYwNnona68xabnaeDzGwCz2Fpf34UBdzIkAdDLVFMA09pP80FAT8962u2OyyDPYpldLagIHGlfLG9NtX8NGBgpUAkPkC0r6Y8KOBdK4x2C3cyBORg9BrisfdamhCO1qRqzGWfO6nK1N6gAK4jLxEnL72oMyqM2nOUa-EsQ6skASk2G5phCpjEavUw");
+        assertTrue(
+                tokenPayloadString.contains("client_id")
+        );
+    }
 }

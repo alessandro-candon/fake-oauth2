@@ -21,13 +21,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OAuthController {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(OAuthController.class);
 
+    // todo : instatiate this class with the interface dinamically, how do it?
     @Autowired private RSAKeyService rsaKeyService;
 
     @Autowired private UserService userService;
 
     @Autowired private JwtService jwtService;
 
-    @GetMapping(path = "/as/token.oauth2")
+    @PostMapping(path = "/as/token.oauth2")
     public JwtToken token() {
 
         // TODO:  maybe move this on RSAKey Service
@@ -42,18 +43,13 @@ public class OAuthController {
     }
 
     @GetMapping(path = "/as/authorization.oauth2")
-    public RedirectView redirect(@RequestParam String redirectUri, @RequestParam String state) {
+    public RedirectView redirect(@RequestParam("redirect_uri") String redirectUri, @RequestParam("state") String state) {
         var redirect =
                 UriComponentsBuilder.fromUriString(redirectUri)
                         .queryParam("state", state)
                         .queryParam("code", "random_fake_code")
                         .toUriString();
         return new RedirectView(redirect, false, true);
-    }
-
-    @PostMapping(path = "/as/token.oauth2/payload")
-    public void tokenPayload(@RequestBody JsonNode rawJwtPayload) {
-        userService.setJwtPayload(rawJwtPayload);
     }
 
     @GetMapping(path = "/ext/jwks")
