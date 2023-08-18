@@ -1,6 +1,10 @@
 package com.alessandrocandon.fakeoauth2;
 
+import com.alessandrocandon.fakeoauth2.dictionary.AllowedAlgorithm;
+import com.alessandrocandon.fakeoauth2.service.IKeyService;
+import com.alessandrocandon.fakeoauth2.service.RSAKeyService;
 import com.alessandrocandon.fakeoauth2.service.UserService;
+import java.security.NoSuchAlgorithmException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -23,7 +27,7 @@ public class FakeOAuth2Application {
     }
 
     @Bean
-    public UserService get() {
+    public UserService istantiateUserService() {
         return new UserService();
     }
 
@@ -35,5 +39,15 @@ public class FakeOAuth2Application {
                 registry.addMapping("/**").allowedOrigins("*");
             }
         };
+    }
+
+    @Bean
+    public IKeyService istantiateIKeyService() throws NoSuchAlgorithmException {
+        switch (appProperties.algorithm()) {
+            case AllowedAlgorithm.RSA:
+                return new RSAKeyService(appProperties);
+            default:
+                throw new RuntimeException("This algorithm is not supported");
+        }
     }
 }

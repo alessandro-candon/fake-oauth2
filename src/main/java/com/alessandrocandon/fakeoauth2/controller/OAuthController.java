@@ -2,12 +2,7 @@ package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.dto.JwtToken;
 import com.alessandrocandon.fakeoauth2.service.JwtService;
-import com.alessandrocandon.fakeoauth2.service.RSAKeyService;
-import com.alessandrocandon.fakeoauth2.service.UserService;
 import com.alessandrocandon.fakeoauth2.util.FileUtil;
-import com.auth0.jwt.algorithms.Algorithm;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +15,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class OAuthController {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(OAuthController.class);
 
-    // todo : instatiate this class with the interface dinamically, how do it?
-    @Autowired private RSAKeyService rsaKeyService;
-
-    @Autowired private UserService userService;
-
     @Autowired private JwtService jwtService;
 
     @PostMapping(path = "/as/token.oauth2")
     public JwtToken token() {
 
-        // TODO:  maybe move this on RSAKey Service
-        Algorithm algorithm =
-                Algorithm.RSA256(
-                        (RSAPublicKey) rsaKeyService.getPublic(),
-                        (RSAPrivateKey) rsaKeyService.getPrivate());
-
         Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        return jwtService.getToken(algorithm, headers);
+        return jwtService.getToken(headers);
     }
 
     @GetMapping(path = "/as/authorization.oauth2")

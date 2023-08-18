@@ -36,6 +36,7 @@ class JwtServiceTest {
         var appProperties =
                 new AppProperties(
                         "RSA",
+                        "RSA256",
                         "static/public_key.pem",
                         "static/private_key_pkcs8.pem",
                         "static/jwks.json");
@@ -58,7 +59,7 @@ class JwtServiceTest {
 
         Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        JwtToken jwtToken = jwtService.getToken(algorithm, headers);
+        JwtToken jwtToken = jwtService.getToken(headers);
 
         assertInstanceOf(JwtToken.class, jwtToken);
     }
@@ -78,7 +79,7 @@ class JwtServiceTest {
 
         Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        JwtToken jwtToken = jwtService.getToken(algorithm, headers);
+        JwtToken jwtToken = jwtService.getToken(headers);
 
         DecodedJWT jwt = JWT.decode(jwtToken.accessToken());
         JwkProvider provider = new UrlJwkProvider(mockBackEnd.url("/").toString());

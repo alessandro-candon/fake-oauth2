@@ -1,0 +1,81 @@
+name: Build, Test and Security scan
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  JAVA_VERSION: '17'
+  IMAGE: 'fake-oauth2'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build_test_scan:
+    runs-on: Linux
+    timeout-minutes: 10
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          settings-path: ${{ github.workspace }} # by specifying the path of an already existing file it will avoid overriding
+          distribution: 'temurin'
+
+      - name: Run Build and Test with Gradle Wrapper
+        run: ./gradlew clean test --stacktrace
+
+      - name: Clean
+        uses: docker://centos
+        if: ${{ success() || failure() }}
+        continue-on-error: true
+        with:
+          args: "/bin/rm /github/workspace -rf"
+
+  security-scans:
+    permissions:
+      contents: write
+      pull-requests: write
+    if: github.ref == 'refs/heads/main'
+    timeout-minutes: 10
+    runs-on: Linux
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: |
+            my-docker-hub-namespace/my-docker-hub-repository
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Clean
+        uses: docker://centos
+        if: ${{ success() || failure() }}
+        continue-on-error: true
+        with:
+          args: "/bin/rm /github/workspace -rf"

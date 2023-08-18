@@ -2,7 +2,6 @@ package com.alessandrocandon.fakeoauth2.service;
 
 import com.alessandrocandon.fakeoauth2.dto.JwtToken;
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
@@ -12,9 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
 
+    @Autowired IKeyService iKeyService;
+
     @Autowired UserService userService;
 
-    public JwtToken getToken(Algorithm algorithm, Map<String, Object> headers) {
+    public JwtToken getToken(Map<String, Object> headers) {
 
         var payload = userService.getJwtPayload();
 
@@ -22,7 +23,7 @@ public class JwtService {
                 JWT.create()
                         .withHeader(headers)
                         .withPayload(payload.toPrettyString())
-                        .sign(algorithm);
+                        .sign(iKeyService.getAlgorithm());
 
         Long exp =
                 payload.findValue("exp") != null

@@ -64,4 +64,4 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
 RUN addgroup -S spring --gid 3000 && adduser -S spring -G spring --uid 1000
 
 USER spring:spring
-CMD java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom --enable-preview -jar /app.jar
+CMD java ${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom -jar /app.jar
