@@ -19,7 +19,7 @@ permissions:
   id-token: write
 
 jobs:
-  build_test_scan:
+  test:
     runs-on: Linux
     timeout-minutes: 10
     steps:
@@ -43,7 +43,7 @@ jobs:
         with:
           args: "/bin/rm /github/workspace -rf"
 
-  security-scans:
+  build:
     permissions:
       contents: write
       pull-requests: write
