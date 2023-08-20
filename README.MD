@@ -81,3 +81,16 @@ Get list of all users in-memory:
 ```shell
 curl --location 'http://localhost:8080/userinfo'
 ```
+
+
+## Use DOCKER IMAGE 
+
+See all tags here : https://hub.docker.com/r/acando14/fake-oauth2
+
+OR 
+
+```shell
+docker pull acando14/fake-oauth2
+
+docker run -it -p 8080:8080 acando14/fake-oauth2
+```
