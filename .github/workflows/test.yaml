@@ -1,0 +1,44 @@
+name: Test docker image
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  JAVA_VERSION: '17'
+  IMAGE: 'fake-oauth2'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          settings-path: ${{ github.workspace }} # by specifying the path of an already existing file it will avoid overriding
+          distribution: 'temurin'
+
+      - name: Run Build and Test with Gradle Wrapper
+        run: ./gradlew clean test --stacktrace
+
+      - name: Clean
+        uses: docker://centos
+        if: ${{ success() || failure() }}
+        continue-on-error: true
+        with:
+          args: "/bin/rm /github/workspace -rf"
