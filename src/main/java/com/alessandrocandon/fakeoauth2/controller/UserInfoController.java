@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(produces = "application/json")
 public class UserInfoController {
 
     @Autowired private UserService userService;

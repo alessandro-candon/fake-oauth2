@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(produces = "application/json")
 public class UtilController {
 
     @Autowired private UserService userService;
