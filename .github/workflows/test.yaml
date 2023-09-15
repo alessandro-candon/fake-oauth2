@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout project sources
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v3
