@@ -11,6 +11,11 @@ public class UtilController {
 
     @Autowired private UserService userService;
 
+    @PostMapping("/userinfo")
+    public void post(@RequestBody JsonNode rawUser) {
+        userService.setUser(rawUser);
+    }
+
     @GetMapping("/userinfo")
     public Map<Integer, JsonNode> getAll() {
         return userService.getAllUsers();

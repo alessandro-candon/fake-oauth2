@@ -15,11 +15,6 @@ public class UserInfoController {
     @Autowired private JwtService jwtService;
 
     @PostMapping("/idp/userinfo.openid")
-    public void post(@RequestBody JsonNode rawUser) {
-        userService.setUser(rawUser);
-    }
-
-    @GetMapping("/idp/userinfo.openid")
     public JsonNode get(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token)
             throws JsonProcessingException {
