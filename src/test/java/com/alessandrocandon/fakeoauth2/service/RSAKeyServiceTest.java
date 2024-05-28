@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.service;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,31 +12,31 @@ import org.junit.jupiter.api.Test;
 
 class RSAKeyServiceTest {
 
-    AppProperties appProperties;
+  AppProperties appProperties;
 
-    RSAKeyService rsaKeyService;
+  RSAKeyService rsaKeyService;
 
-    @BeforeEach
-    void setUp() throws NoSuchAlgorithmException {
-        this.appProperties =
-                new AppProperties(
-                        "RSA",
-                        "RSA256",
-                        "static/public_key.pem",
-                        "static/private_key_pkcs8.pem",
-                        "static/jwks.json");
-        this.rsaKeyService = new RSAKeyService(appProperties);
-    }
+  @BeforeEach
+  void setUp() throws NoSuchAlgorithmException {
+    this.appProperties =
+        new AppProperties(
+            "RSA",
+            "RSA256",
+            "static/public_key.pem",
+            "static/private_key_pkcs8.pem",
+            "static/jwks.json");
+    this.rsaKeyService = new RSAKeyService(appProperties);
+  }
 
-    @Test
-    void getPrivate() {
-        var key = rsaKeyService.getPrivate();
-        assertInstanceOf(RSAPrivateKey.class, key);
-    }
+  @Test
+  void getPrivate() {
+    var key = rsaKeyService.getPrivate();
+    assertInstanceOf(RSAPrivateKey.class, key);
+  }
 
-    @Test
-    void getPublic() {
-        var key = rsaKeyService.getPublic();
-        assertInstanceOf(RSAPublicKey.class, key);
-    }
+  @Test
+  void getPublic() {
+    var key = rsaKeyService.getPublic();
+    assertInstanceOf(RSAPublicKey.class, key);
+  }
 }

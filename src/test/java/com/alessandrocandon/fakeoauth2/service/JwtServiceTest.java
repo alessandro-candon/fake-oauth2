@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.service;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,76 +26,74 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class JwtServiceTest {
 
-    private IKeyService rsaKeyService;
+  private IKeyService rsaKeyService;
 
-    static MockWebServer mockBackEnd;
+  static MockWebServer mockBackEnd;
 
-    @Autowired private JwtService jwtService;
+  @Autowired private JwtService jwtService;
 
-    @BeforeEach
-    void setUp() throws NoSuchAlgorithmException, IOException {
-        var appProperties =
-                new AppProperties(
-                        "RSA",
-                        "RSA256",
-                        "static/public_key.pem",
-                        "static/private_key_pkcs8.pem",
-                        "static/jwks.json");
-        this.rsaKeyService = new RSAKeyService(appProperties);
-        mockBackEnd = new MockWebServer();
-        mockBackEnd.start();
-    }
+  @BeforeEach
+  void setUp() throws NoSuchAlgorithmException, IOException {
+    var appProperties =
+        new AppProperties(
+            "RSA",
+            "RSA256",
+            "static/public_key.pem",
+            "static/private_key_pkcs8.pem",
+            "static/jwks.json");
+    this.rsaKeyService = new RSAKeyService(appProperties);
+    mockBackEnd = new MockWebServer();
+    mockBackEnd.start();
+  }
 
-    @AfterEach
-    void tearDown() throws IOException {
-        mockBackEnd.shutdown();
-    }
+  @AfterEach
+  void tearDown() throws IOException {
+    mockBackEnd.shutdown();
+  }
 
-    @Test
-    void getTokenRsa() {
-        Algorithm algorithm =
-                Algorithm.RSA256(
-                        (RSAPublicKey) rsaKeyService.getPublic(),
-                        (RSAPrivateKey) rsaKeyService.getPrivate());
+  @Test
+  void getTokenRsa() {
+    Algorithm algorithm =
+        Algorithm.RSA256(
+            (RSAPublicKey) rsaKeyService.getPublic(), (RSAPrivateKey) rsaKeyService.getPrivate());
 
-        Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
+    Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        JwtToken jwtToken = jwtService.getToken(headers);
+    JwtToken jwtToken = jwtService.getToken(headers);
 
-        assertInstanceOf(JwtToken.class, jwtToken);
-    }
+    assertInstanceOf(JwtToken.class, jwtToken);
+  }
 
-    @Test
-    void getTokenRsaAndVerifyWithJWKs() throws JwkException {
+  @Test
+  void getTokenRsaAndVerifyWithJWKs() throws JwkException {
 
-        mockBackEnd.enqueue(
-                new MockResponse()
-                        .setBody(FileUtil.getResourceFileAsString("static/jwks.json"))
-                        .addHeader("Content-Type", "application/json"));
+    mockBackEnd.enqueue(
+        new MockResponse()
+            .setBody(FileUtil.getResourceFileAsString("static/jwks.json"))
+            .addHeader("Content-Type", "application/json"));
 
-        Algorithm algorithm =
-                Algorithm.RSA256(
-                        (RSAPublicKey) rsaKeyService.getPublic(),
-                        (RSAPrivateKey) rsaKeyService.getPrivate());
+    Algorithm algorithm =
+        Algorithm.RSA256(
+            (RSAPublicKey) rsaKeyService.getPublic(), (RSAPrivateKey) rsaKeyService.getPrivate());
 
-        Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
+    Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        JwtToken jwtToken = jwtService.getToken(headers);
+    JwtToken jwtToken = jwtService.getToken(headers);
 
-        DecodedJWT jwt = JWT.decode(jwtToken.accessToken());
-        JwkProvider provider = new UrlJwkProvider(mockBackEnd.url("/").toString());
-        Jwk jwk = provider.get(jwt.getKeyId());
-        Algorithm algorithmOfJwk = Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null);
+    DecodedJWT jwt = JWT.decode(jwtToken.accessToken());
+    JwkProvider provider = new UrlJwkProvider(mockBackEnd.url("/").toString());
+    Jwk jwk = provider.get(jwt.getKeyId());
+    Algorithm algorithmOfJwk = Algorithm.RSA256((RSAPublicKey) jwk.getPublicKey(), null);
 
-        algorithmOfJwk.verify(jwt);
-    }
+    algorithmOfJwk.verify(jwt);
+  }
 
-    @Test
-    void getDecodedPayload() {
-        var tokenPayloadString =
-                jwtService.getDecodedPayload(
-                        "Bearer"
-                            + " eyJraWQiOiJNQUlOIiwicGkuYXRtIjoiNSIsImFsZyI6IlJTMjU2IiwidHlwIjoiSldUIn0.eyJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIl0sImF1dGhvcml6YXRpb25fZGV0YWlscyI6W10sImNsaWVudF9pZCI6Im15Y2lkIiwiaXNzIjoiZXhhbXBsZS5vcmciLCJqdGkiOiIxMjMiLCJzdWIiOiJhbGVzc2FuZHJvLWNhbmRvbiIsInVpZCI6ImFsZXNzYW5kcm8tY2FuZG9uIiwib3JpZ2luIjoiY29ycG9yYXRlIiwiaWF0IjoxNjkyMDI1MDU5LCJ1dWlkIjoieHh4eHh4eC00N2EzLTM0NGYtYmJiNC14eHh4eHgiLCJ1c2VyX2tleV9pZCI6MH0.rrK6SHgWzlQFAS4WAP9jnSfzmvWveCXYsiiRllyURkxqwC08Dxjf7oSGY8bZvSlCjOqMc7eCZZE9R5atQBy3RYcpKAWS4kCXatJCAvnxjEtYLH0RyzoGFQrHkhtX-_sH-Zu-7FPogjcBl5Z0jiBQ46HOHPJn8TYwNnona68xabnaeDzGwCz2Fpf34UBdzIkAdDLVFMA09pP80FAT8962u2OyyDPYpldLagIHGlfLG9NtX8NGBgpUAkPkC0r6Y8KOBdK4x2C3cyBORg9BrisfdamhCO1qRqzGWfO6nK1N6gAK4jLxEnL72oMyqM2nOUa-EsQ6skASk2G5phCpjEavUw");
-        assertTrue(tokenPayloadString.contains("client_id"));
-    }
+  @Test
+  void getDecodedPayload() {
+    var tokenPayloadString =
+        jwtService.getDecodedPayload(
+            "Bearer"
+                + " eyJraWQiOiJNQUlOIiwicGkuYXRtIjoiNSIsImFsZyI6IlJTMjU2IiwidHlwIjoiSldUIn0.eyJzY29wZSI6WyJvcGVuaWQiLCJwcm9maWxlIl0sImF1dGhvcml6YXRpb25fZGV0YWlscyI6W10sImNsaWVudF9pZCI6Im15Y2lkIiwiaXNzIjoiZXhhbXBsZS5vcmciLCJqdGkiOiIxMjMiLCJzdWIiOiJhbGVzc2FuZHJvLWNhbmRvbiIsInVpZCI6ImFsZXNzYW5kcm8tY2FuZG9uIiwib3JpZ2luIjoiY29ycG9yYXRlIiwiaWF0IjoxNjkyMDI1MDU5LCJ1dWlkIjoieHh4eHh4eC00N2EzLTM0NGYtYmJiNC14eHh4eHgiLCJ1c2VyX2tleV9pZCI6MH0.rrK6SHgWzlQFAS4WAP9jnSfzmvWveCXYsiiRllyURkxqwC08Dxjf7oSGY8bZvSlCjOqMc7eCZZE9R5atQBy3RYcpKAWS4kCXatJCAvnxjEtYLH0RyzoGFQrHkhtX-_sH-Zu-7FPogjcBl5Z0jiBQ46HOHPJn8TYwNnona68xabnaeDzGwCz2Fpf34UBdzIkAdDLVFMA09pP80FAT8962u2OyyDPYpldLagIHGlfLG9NtX8NGBgpUAkPkC0r6Y8KOBdK4x2C3cyBORg9BrisfdamhCO1qRqzGWfO6nK1N6gAK4jLxEnL72oMyqM2nOUa-EsQ6skASk2G5phCpjEavUw");
+    assertTrue(tokenPayloadString.contains("client_id"));
+  }
 }

@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.service.JwtService;
@@ -11,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserInfoController {
 
-    @Autowired private UserService userService;
-    @Autowired private JwtService jwtService;
+  @Autowired private UserService userService;
+  @Autowired private JwtService jwtService;
 
-    @PostMapping("/idp/userinfo.openid")
-    public JsonNode get(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token)
-            throws JsonProcessingException {
-        var jwtPayload = jwtService.getDecodedPayload(token);
-        return userService.getUserByJwtPayload(jwtPayload);
-    }
+  @PostMapping("/idp/userinfo.openid")
+  public JsonNode get(
+      @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token)
+      throws JsonProcessingException {
+    var jwtPayload = jwtService.getDecodedPayload(token);
+    return userService.getUserByJwtPayload(jwtPayload);
+  }
 }

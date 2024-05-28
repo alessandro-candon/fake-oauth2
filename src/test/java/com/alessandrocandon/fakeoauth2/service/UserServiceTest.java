@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.service;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,29 +12,29 @@ import org.junit.jupiter.api.Test;
 
 class UserServiceTest {
 
-    UserService userService;
+  UserService userService;
 
-    @BeforeEach
-    void setUp() {
-        userService = new UserService();
-    }
+  @BeforeEach
+  void setUp() {
+    userService = new UserService();
+  }
 
-    @Test
-    void userFlowTest() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode json = mapper.readTree("{\"test\":\"abc\"}");
-        userService.setUser(json);
-        assertEquals(json, userService.getLastUser());
-        assertEquals(json, userService.getUser(1));
-        assertEquals(json, userService.getUserByJwtPayload("{\"user_key_id\":1}"));
-        assertEquals(1, userService.getCurrentUserKey());
-    }
+  @Test
+  void userFlowTest() throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode json = mapper.readTree("{\"test\":\"abc\"}");
+    userService.setUser(json);
+    assertEquals(json, userService.getLastUser());
+    assertEquals(json, userService.getUser(1));
+    assertEquals(json, userService.getUserByJwtPayload("{\"user_key_id\":1}"));
+    assertEquals(1, userService.getCurrentUserKey());
+  }
 
-    @Test
-    void jwtPayloadTest() {
-        var emptyNode = JsonNodeFactory.instance.objectNode();
-        userService.setJwtPayload(emptyNode);
-        var jwtPayload = userService.getJwtPayload();
-        assertEquals(jwtPayload.get(UserService.USER_PAYLOAD_KEY).asInt(), 0);
-    }
+  @Test
+  void jwtPayloadTest() {
+    var emptyNode = JsonNodeFactory.instance.objectNode();
+    userService.setJwtPayload(emptyNode);
+    var jwtPayload = userService.getJwtPayload();
+    assertEquals(jwtPayload.get(UserService.USER_PAYLOAD_KEY).asInt(), 0);
+  }
 }

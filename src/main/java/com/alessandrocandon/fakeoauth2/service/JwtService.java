@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.service;
 
 import com.alessandrocandon.fakeoauth2.dto.JwtToken;
@@ -11,30 +12,30 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
 
-    @Autowired IKeyService iKeyService;
+  @Autowired IKeyService iKeyService;
 
-    @Autowired UserService userService;
+  @Autowired UserService userService;
 
-    public JwtToken getToken(Map<String, Object> headers) {
+  public JwtToken getToken(Map<String, Object> headers) {
 
-        var payload = userService.getJwtPayload();
+    var payload = userService.getJwtPayload();
 
-        String jwt =
-                JWT.create()
-                        .withHeader(headers)
-                        .withPayload(payload.toPrettyString())
-                        .sign(iKeyService.getAlgorithm());
+    String jwt =
+        JWT.create()
+            .withHeader(headers)
+            .withPayload(payload.toPrettyString())
+            .sign(iKeyService.getAlgorithm());
 
-        Long exp =
-                payload.findValue("exp") != null
-                        ? payload.get("exp").asInt()
-                        : Instant.now().getEpochSecond();
-        // todo : we can add a fake refresh token to return a real token.
-        return new JwtToken(jwt, exp);
-    }
+    Long exp =
+        payload.findValue("exp") != null
+            ? payload.get("exp").asInt()
+            : Instant.now().getEpochSecond();
+    // todo : we can add a fake refresh token to return a real token.
+    return new JwtToken(jwt, exp);
+  }
 
-    public String getDecodedPayload(String authorizationHeader) {
-        String payload = JWT.decode(authorizationHeader.replace("Bearer ", "")).getPayload();
-        return new String(Base64.getDecoder().decode(payload));
-    }
+  public String getDecodedPayload(String authorizationHeader) {
+    String payload = JWT.decode(authorizationHeader.replace("Bearer ", "")).getPayload();
+    return new String(Base64.getDecoder().decode(payload));
+  }
 }

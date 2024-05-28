@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2;
 
 import com.alessandrocandon.fakeoauth2.dictionary.AllowedAlgorithm;
@@ -16,38 +17,38 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ConfigurationPropertiesScan
 public class FakeOAuth2Application {
 
-    private final AppProperties appProperties;
+  private final AppProperties appProperties;
 
-    public FakeOAuth2Application(AppProperties appProperties) {
-        this.appProperties = appProperties;
-    }
+  public FakeOAuth2Application(AppProperties appProperties) {
+    this.appProperties = appProperties;
+  }
 
-    public static void main(String[] args) {
-        SpringApplication.run(FakeOAuth2Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(FakeOAuth2Application.class, args);
+  }
 
-    @Bean
-    public UserService istantiateUserService() {
-        return new UserService();
-    }
+  @Bean
+  public UserService istantiateUserService() {
+    return new UserService();
+  }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*");
-            }
-        };
-    }
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*");
+      }
+    };
+  }
 
-    @Bean
-    public IKeyService istantiateIKeyService() throws NoSuchAlgorithmException {
-        switch (appProperties.algorithm()) {
-            case AllowedAlgorithm.RSA:
-                return new RSAKeyService(appProperties);
-            default:
-                throw new RuntimeException("This algorithm is not supported");
-        }
+  @Bean
+  public IKeyService istantiateIKeyService() throws NoSuchAlgorithmException {
+    switch (appProperties.algorithm()) {
+      case AllowedAlgorithm.RSA:
+        return new RSAKeyService(appProperties);
+      default:
+        throw new RuntimeException("This algorithm is not supported");
     }
+  }
 }

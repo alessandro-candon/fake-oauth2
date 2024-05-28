@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.dto.JwtToken;
@@ -12,31 +13,31 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class OAuthController {
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(OAuthController.class);
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(OAuthController.class);
 
-    @Autowired private JwtService jwtService;
+  @Autowired private JwtService jwtService;
 
-    @PostMapping(path = "/as/token.oauth2")
-    public JwtToken token() {
+  @PostMapping(path = "/as/token.oauth2")
+  public JwtToken token() {
 
-        Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
+    Map<String, Object> headers = Map.of("kid", "MAIN", "pi.atm", "5");
 
-        return jwtService.getToken(headers);
-    }
+    return jwtService.getToken(headers);
+  }
 
-    @GetMapping(path = "/as/authorization.oauth2")
-    public RedirectView redirect(
-            @RequestParam("redirect_uri") String redirectUri, @RequestParam("state") String state) {
-        var redirect =
-                UriComponentsBuilder.fromUriString(redirectUri)
-                        .queryParam("state", state)
-                        .queryParam("code", "random_fake_code")
-                        .toUriString();
-        return new RedirectView(redirect, false, true);
-    }
+  @GetMapping(path = "/as/authorization.oauth2")
+  public RedirectView redirect(
+      @RequestParam("redirect_uri") String redirectUri, @RequestParam("state") String state) {
+    var redirect =
+        UriComponentsBuilder.fromUriString(redirectUri)
+            .queryParam("state", state)
+            .queryParam("code", "random_fake_code")
+            .toUriString();
+    return new RedirectView(redirect, false, true);
+  }
 
-    @GetMapping(path = "/ext/jwks")
-    public String jwks() {
-        return FileUtil.getResourceFileAsString("static/jwks.json");
-    }
+  @GetMapping(path = "/ext/jwks")
+  public String jwks() {
+    return FileUtil.getResourceFileAsString("static/jwks.json");
+  }
 }

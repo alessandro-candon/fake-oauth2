@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.service;
 
 import com.alessandrocandon.fakeoauth2.AppProperties;
@@ -16,55 +17,56 @@ import java.util.Base64;
 
 public class RSAKeyService implements IKeyService {
 
-    private final AppProperties appProperties;
-    private final String publicKeyClean;
-    private final String privateKeyClean;
+  private final AppProperties appProperties;
+  private final String publicKeyClean;
+  private final String privateKeyClean;
 
-    private final KeyFactory kf;
+  private final KeyFactory kf;
 
-    public RSAKeyService(AppProperties appProperties) throws NoSuchAlgorithmException {
-        this.appProperties = appProperties;
-        String privateKeyRaw = FileUtil.getResourceFileAsString(appProperties.privateKeyPath());
-        String publicKeyRaw = FileUtil.getResourceFileAsString(appProperties.publicKeyPath());
-        privateKeyClean = cleaner(privateKeyRaw);
-        publicKeyClean = cleaner(publicKeyRaw);
-        kf = KeyFactory.getInstance(AllowedAlgorithm.RSA);
+  public RSAKeyService(AppProperties appProperties) throws NoSuchAlgorithmException {
+    this.appProperties = appProperties;
+    String privateKeyRaw = FileUtil.getResourceFileAsString(appProperties.privateKeyPath());
+    String publicKeyRaw = FileUtil.getResourceFileAsString(appProperties.publicKeyPath());
+    privateKeyClean = cleaner(privateKeyRaw);
+    publicKeyClean = cleaner(publicKeyRaw);
+    kf = KeyFactory.getInstance(AllowedAlgorithm.RSA);
+  }
+
+  public Algorithm getAlgorithm() {
+    switch (appProperties.hash()) {
+      case AllowedHash.RSA256:
+        return Algorithm.RSA256(this.getPublic(), this.getPrivate());
+      default:
+        throw new RuntimeException("Not HASH algorithm allowed");
     }
+  }
 
-    public Algorithm getAlgorithm() {
-        switch (appProperties.hash()) {
-            case AllowedHash.RSA256:
-                return Algorithm.RSA256(this.getPublic(), this.getPrivate());
-            default:
-                throw new RuntimeException("Not HASH algorithm allowed");
-        }
+  public RSAPrivateKey getPrivate() {
+    PKCS8EncodedKeySpec keySpecPKCS8 =
+        new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyClean));
+    try {
+      return (RSAPrivateKey) kf.generatePrivate(keySpecPKCS8);
+    } catch (InvalidKeySpecException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    public RSAPrivateKey getPrivate() {
-        PKCS8EncodedKeySpec keySpecPKCS8 =
-                new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyClean));
-        try {
-            return (RSAPrivateKey) kf.generatePrivate(keySpecPKCS8);
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        }
+  public RSAPublicKey getPublic() {
+    X509EncodedKeySpec keySpecX509 =
+        new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyClean));
+    try {
+      return (RSAPublicKey) kf.generatePublic(keySpecX509);
+    } catch (InvalidKeySpecException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    public RSAPublicKey getPublic() {
-        X509EncodedKeySpec keySpecX509 =
-                new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyClean));
-        try {
-            return (RSAPublicKey) kf.generatePublic(keySpecX509);
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String cleaner(String rawKey) {
-        return rawKey.replaceAll("\\n", "")
-                .replace("-----BEGIN PRIVATE KEY-----", "")
-                .replace("-----END PRIVATE KEY-----", "")
-                .replace("-----BEGIN PUBLIC KEY-----", "")
-                .replace("-----END PUBLIC KEY-----", "");
-    }
+  private String cleaner(String rawKey) {
+    return rawKey
+        .replaceAll("\\n", "")
+        .replace("-----BEGIN PRIVATE KEY-----", "")
+        .replace("-----END PRIVATE KEY-----", "")
+        .replace("-----BEGIN PUBLIC KEY-----", "")
+        .replace("-----END PUBLIC KEY-----", "");
+  }
 }
