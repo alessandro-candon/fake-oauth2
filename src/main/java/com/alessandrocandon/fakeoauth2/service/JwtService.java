@@ -6,15 +6,19 @@ import com.auth0.jwt.JWT;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
 
-  @Autowired IKeyService iKeyService;
+  private final IKeyService iKeyService;
 
-  @Autowired UserService userService;
+  private final UserService userService;
+
+  public JwtService(UserService userService, IKeyService iKeyService) {
+    this.userService = userService;
+    this.iKeyService = iKeyService;
+  }
 
   public JwtToken getToken(Map<String, Object> headers) {
 

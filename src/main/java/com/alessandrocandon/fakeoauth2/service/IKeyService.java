@@ -6,9 +6,9 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 
 public interface IKeyService {
-  public PrivateKey getPrivate();
+  PrivateKey getPrivate();
 
-  public PublicKey getPublic();
+  PublicKey getPublic();
 
-  public Algorithm getAlgorithm();
+  Algorithm getAlgorithm();
 }
