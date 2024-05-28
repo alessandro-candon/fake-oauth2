@@ -32,12 +32,19 @@ tasks.named('test') {
 }
 
 spotless {
+	enforceCheck false
 	java {
 		importOrder()
 		removeUnusedImports()
-		cleanthat()
-		googleJavaFormat().aosp().reflowLongStrings()
+		cleanthat().version('2.18')
+		googleJavaFormat().reflowLongStrings()
 		formatAnnotations()
 		toggleOffOn()
+		licenseHeader '/* Alessandro Candon (C) $YEAR */'
 	}
+}
+
+tasks.register('updateGitHooks', Copy) {
+	from './scripts/pre-commit'
+	into './.git/hooks'
 }
