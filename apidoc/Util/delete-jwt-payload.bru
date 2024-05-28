@@ -1,0 +1,11 @@
+meta {
+  name: delete-jwt-payload
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/as/token.oauth2/payload
+  body: none
+  auth: none
+}

@@ -1,0 +1,17 @@
+meta {
+  name: post-jwt-payload
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{ baseUrl }}/as/token.oauth2/payload
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "jwtbody": "my jwt body field"
+  }
+}

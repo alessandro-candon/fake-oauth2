@@ -82,6 +82,11 @@ Get list of all users in-memory:
 curl --location 'http://localhost:8080/userinfo'
 ```
 
+## Api Documentation
+
+You can use Bruno to open our API documentation to start exploring the project : https://www.usebruno.com/
+
+
 
 ## Use DOCKER IMAGE 
 
@@ -94,3 +99,5 @@ docker pull acando14/fake-oauth2
 
 docker run -it -p 8080:8080 acando14/fake-oauth2
 ```
+
+
