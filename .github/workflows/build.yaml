@@ -10,7 +10,7 @@ on:
       - "v*.*.*"
 
 env:
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '21'
   IMAGE: 'fake-oauth2'
   REGISTRY_IMAGE: 'acando14/fake-oauth2'
 

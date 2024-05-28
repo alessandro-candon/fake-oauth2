@@ -1,4 +1,4 @@
-FROM amazoncorretto:17-alpine as builder
+FROM amazoncorretto:21-alpine as builder
 
 COPY gradle gradle
 COPY build.gradle .
@@ -8,7 +8,7 @@ COPY src src
 
 RUN ./gradlew build -x test
 
-FROM amazoncorretto:17-alpine as corretto-deps
+FROM amazoncorretto:21-alpine as corretto-deps
 
 COPY --from=builder ./build/libs/*-SNAPSHOT.jar /app/app.jar
 
@@ -17,12 +17,12 @@ RUN unzip /app/app.jar -d temp &&  \
       --print-module-deps \
       --ignore-missing-deps \
       --recursive \
-      --multi-release 17 \
+      --multi-release 21 \
       --class-path="./temp/BOOT-INF/lib/*" \
       --module-path="./temp/BOOT-INF/lib/*" \
       /app/app.jar > /modules.txt
 
-FROM amazoncorretto:17-alpine as corretto-jdk
+FROM amazoncorretto:21-alpine as corretto-jdk
 
 COPY --from=corretto-deps /modules.txt /modules.txt
 RUN apk add --no-cache binutils && \
