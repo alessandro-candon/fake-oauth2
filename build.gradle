@@ -40,11 +40,18 @@ spotless {
 		googleJavaFormat().reflowLongStrings()
 		formatAnnotations()
 		toggleOffOn()
-		licenseHeader '/* Alessandro Candon (C) $YEAR */'
+		licenseHeader '/* Decathlon Italy - Tacos Team(C) $YEAR */'
 	}
 }
 
 tasks.register('updateGitHooks', Copy) {
 	from './scripts/pre-commit'
 	into './.git/hooks'
+}
+compileJava.dependsOn updateGitHooks
+
+apply plugin: 'org.springframework.boot'
+
+springBoot {
+	buildInfo()
 }
