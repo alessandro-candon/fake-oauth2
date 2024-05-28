@@ -2,6 +2,7 @@
 package com.alessandrocandon.fakeoauth2;
 
 import com.alessandrocandon.fakeoauth2.dictionary.AllowedAlgorithm;
+import com.alessandrocandon.fakeoauth2.exception.NotSupportedConfigurationRuntimeException;
 import com.alessandrocandon.fakeoauth2.service.IKeyService;
 import com.alessandrocandon.fakeoauth2.service.RSAKeyService;
 import com.alessandrocandon.fakeoauth2.service.UserService;
@@ -48,7 +49,7 @@ public class FakeOAuth2Application {
       case AllowedAlgorithm.RSA:
         return new RSAKeyService(appProperties);
       default:
-        throw new RuntimeException("This algorithm is not supported");
+        throw new NotSupportedConfigurationRuntimeException("This algorithm is not supported");
     }
   }
 }

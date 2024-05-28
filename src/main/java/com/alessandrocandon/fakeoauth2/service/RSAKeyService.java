@@ -4,6 +4,7 @@ package com.alessandrocandon.fakeoauth2.service;
 import com.alessandrocandon.fakeoauth2.AppProperties;
 import com.alessandrocandon.fakeoauth2.dictionary.AllowedAlgorithm;
 import com.alessandrocandon.fakeoauth2.dictionary.AllowedHash;
+import com.alessandrocandon.fakeoauth2.exception.NotSupportedConfigurationRuntimeException;
 import com.alessandrocandon.fakeoauth2.util.FileUtil;
 import com.auth0.jwt.algorithms.Algorithm;
 import java.security.KeyFactory;
@@ -37,7 +38,7 @@ public class RSAKeyService implements IKeyService {
       case AllowedHash.RSA256:
         return Algorithm.RSA256(this.getPublic(), this.getPrivate());
       default:
-        throw new RuntimeException("Not HASH algorithm allowed");
+        throw new NotSupportedConfigurationRuntimeException("Not HASH algorithm allowed");
     }
   }
 
@@ -47,7 +48,7 @@ public class RSAKeyService implements IKeyService {
     try {
       return (RSAPrivateKey) kf.generatePrivate(keySpecPKCS8);
     } catch (InvalidKeySpecException e) {
-      throw new RuntimeException(e);
+      throw new NotSupportedConfigurationRuntimeException("No valid private key found");
     }
   }
 
@@ -57,13 +58,13 @@ public class RSAKeyService implements IKeyService {
     try {
       return (RSAPublicKey) kf.generatePublic(keySpecX509);
     } catch (InvalidKeySpecException e) {
-      throw new RuntimeException(e);
+      throw new NotSupportedConfigurationRuntimeException("No valid public key found");
     }
   }
 
   private String cleaner(String rawKey) {
     return rawKey
-        .replaceAll("\\n", "")
+        .replace("\n", "")
         .replace("-----BEGIN PRIVATE KEY-----", "")
         .replace("-----END PRIVATE KEY-----", "")
         .replace("-----BEGIN PUBLIC KEY-----", "")

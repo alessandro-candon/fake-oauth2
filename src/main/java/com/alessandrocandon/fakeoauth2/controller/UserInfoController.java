@@ -5,15 +5,20 @@ import com.alessandrocandon.fakeoauth2.service.JwtService;
 import com.alessandrocandon.fakeoauth2.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserInfoController {
 
-  @Autowired private UserService userService;
-  @Autowired private JwtService jwtService;
+  private final JwtService jwtService;
+
+  private final UserService userService;
+
+  public UserInfoController(UserService userService, JwtService jwtService) {
+    this.jwtService = jwtService;
+    this.userService = userService;
+  }
 
   @PostMapping("/idp/userinfo.openid")
   public JsonNode get(

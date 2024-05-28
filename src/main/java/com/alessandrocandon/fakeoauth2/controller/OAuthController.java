@@ -5,17 +5,18 @@ import com.alessandrocandon.fakeoauth2.dto.JwtToken;
 import com.alessandrocandon.fakeoauth2.service.JwtService;
 import com.alessandrocandon.fakeoauth2.util.FileUtil;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class OAuthController {
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(OAuthController.class);
 
-  @Autowired private JwtService jwtService;
+  private final JwtService jwtService;
+
+  public OAuthController(JwtService jwtService) {
+    this.jwtService = jwtService;
+  }
 
   @PostMapping(path = "/as/token.oauth2")
   public JwtToken token() {
