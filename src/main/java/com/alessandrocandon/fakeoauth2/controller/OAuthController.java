@@ -5,6 +5,8 @@ import com.alessandrocandon.fakeoauth2.dto.JwtToken;
 import com.alessandrocandon.fakeoauth2.service.JwtService;
 import com.alessandrocandon.fakeoauth2.util.FileUtil;
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -40,5 +42,9 @@ public class OAuthController {
   @GetMapping(path = "/ext/jwks")
   public String jwks() {
     return FileUtil.getResourceFileAsString("static/jwks.json");
+  }
+  @GetMapping(path = "/.well-known/openid-configuration")
+  public JsonNode openIdConfiguration(@RequestParam("base_url")) {
+
   }
 }
