@@ -34,8 +34,8 @@ public class JwtService {
         payload.findValue("exp") != null
             ? payload.get("exp").asInt()
             : Instant.now().getEpochSecond();
-    // todo : we can add a fake refresh token to return a real token.
-    return new JwtToken(jwt, exp);
+
+    return new JwtToken(jwt, jwt, exp);
   }
 
   public String getDecodedPayload(String authorizationHeader) {
