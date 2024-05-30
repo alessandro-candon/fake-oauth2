@@ -13,7 +13,8 @@ public class UserService {
 
   public static final String USER_PAYLOAD_KEY = "user_key_id";
   private static int userKeyIndex;
-  private static JsonNode jwtPayload;
+  private static JsonNode accessTokenPayload;
+  private static JsonNode idTokenPayload;
   private static final Map<Integer, JsonNode> userWithKey = new HashMap<>();
 
   public UserService() {
@@ -50,13 +51,13 @@ public class UserService {
     userKeyIndex++;
   }
 
-  public JsonNode getJwtPayload() {
-    return jwtPayload;
+  public JsonNode getAccessTokenPayload() {
+    return accessTokenPayload;
   }
 
-  public void setJwtPayload(JsonNode payload) {
+  public void setAccessTokenPayload(JsonNode payload) {
     ((ObjectNode) payload).put(UserService.USER_PAYLOAD_KEY, getCurrentUserKey());
-    UserService.jwtPayload = payload;
+    UserService.accessTokenPayload = payload;
   }
 
   public void initUsers() {
@@ -66,6 +67,6 @@ public class UserService {
   }
 
   public void initJwtPayload() {
-    jwtPayload = JsonNodeFactory.instance.objectNode();
+    accessTokenPayload = JsonNodeFactory.instance.objectNode();
   }
 }

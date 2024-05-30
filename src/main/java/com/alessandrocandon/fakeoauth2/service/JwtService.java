@@ -22,7 +22,7 @@ public class JwtService {
 
   public JwtToken getToken(Map<String, Object> headers) {
 
-    var payload = userService.getJwtPayload();
+    var payload = userService.getAccessTokenPayload();
 
     String jwt =
         JWT.create()

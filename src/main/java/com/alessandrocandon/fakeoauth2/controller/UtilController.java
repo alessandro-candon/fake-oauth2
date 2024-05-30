@@ -32,7 +32,7 @@ public class UtilController {
 
   @PostMapping(path = "/as/token.oauth2/payload")
   public void tokenPayload(@RequestBody JsonNode rawJwtPayload) {
-    userService.setJwtPayload(rawJwtPayload);
+    userService.setAccessTokenPayload(rawJwtPayload);
   }
 
   @DeleteMapping("/as/token.oauth2/payload")

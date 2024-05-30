@@ -33,8 +33,8 @@ class UserServiceTest {
   @Test
   void jwtPayloadTest() {
     var emptyNode = JsonNodeFactory.instance.objectNode();
-    userService.setJwtPayload(emptyNode);
-    var jwtPayload = userService.getJwtPayload();
+    userService.setAccessTokenPayload(emptyNode);
+    var jwtPayload = userService.getAccessTokenPayload();
     assertEquals(jwtPayload.get(UserService.USER_PAYLOAD_KEY).asInt(), 0);
   }
 }
