@@ -20,7 +20,7 @@ public class UserInfoController {
     this.userService = userService;
   }
 
-  @PostMapping("/idp/userinfo.openid")
+  @RequestMapping(value = "/idp/userinfo.openid", method = {RequestMethod.GET, RequestMethod.POST})
   public JsonNode get(
       @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token)
       throws JsonProcessingException {
