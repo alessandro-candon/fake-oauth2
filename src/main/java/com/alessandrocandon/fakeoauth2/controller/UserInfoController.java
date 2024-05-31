@@ -2,7 +2,7 @@
 package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.service.JwtService;
-import com.alessandrocandon.fakeoauth2.service.UserService;
+import com.alessandrocandon.fakeoauth2.service.SetUpConfigurationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.http.HttpHeaders;
@@ -13,11 +13,8 @@ public class UserInfoController {
 
   private final JwtService jwtService;
 
-  private final UserService userService;
-
-  public UserInfoController(UserService userService, JwtService jwtService) {
+  public UserInfoController(JwtService jwtService) {
     this.jwtService = jwtService;
-    this.userService = userService;
   }
 
   @RequestMapping(value = "/idp/userinfo.openid", method = {RequestMethod.GET, RequestMethod.POST})
@@ -25,6 +22,7 @@ public class UserInfoController {
       @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token)
       throws JsonProcessingException {
     var jwtPayload = jwtService.getDecodedPayload(token);
-    return userService.getUserByJwtPayload(jwtPayload);
+    var setUpConfiguration = SetUpConfigurationService.getConfigurationByJwtPayload(jwtPayload);
+    return setUpConfiguration.user();
   }
 }

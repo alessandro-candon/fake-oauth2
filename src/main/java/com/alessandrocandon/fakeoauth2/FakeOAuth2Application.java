@@ -5,7 +5,6 @@ import com.alessandrocandon.fakeoauth2.dictionary.AllowedAlgorithm;
 import com.alessandrocandon.fakeoauth2.exception.NotSupportedConfigurationRuntimeException;
 import com.alessandrocandon.fakeoauth2.service.IKeyService;
 import com.alessandrocandon.fakeoauth2.service.RSAKeyService;
-import com.alessandrocandon.fakeoauth2.service.UserService;
 import java.security.NoSuchAlgorithmException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,11 +25,6 @@ public class FakeOAuth2Application {
 
   public static void main(String[] args) {
     SpringApplication.run(FakeOAuth2Application.class, args);
-  }
-
-  @Bean
-  public UserService istantiateUserService() {
-    return new UserService();
   }
 
   @Bean

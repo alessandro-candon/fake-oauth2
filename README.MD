@@ -42,51 +42,25 @@ JWKS from PUBLIC :
 
 This tool generate a jwt and serve it with also all keys.
 
-Actually the only protocol implemented is RSA but you can implement wich protocl you wnat.
+Actually the only protocol implemented is RSA but you can implement wich protocl you want.
 
-User, you can set it with all props, sending a request to `user` path, we use a in memory store.
+All the propriety of the payload of the access_token, id_token and user can be managed with the CRUD API configurations.
+All data are saved in-memory with a static instance.
+You can find all the CRUD api and test it in the Bruno Api Collection below.
 
-If you want to make a test with jwt payload and user payload you shoud make the calls in this way :
+### IMPORTANT
 
-Create the User:
-```shell
-curl --location 'http://localhost:8080/idp/userinfo.openid' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "entryUUID": "bc05b201-47a3-344f-bbb4-09f9403d7e76"
-}'
-```
+The full flow must be :
+1) generate the configurations
+2) start OAuth flow -> all tokens will respect the configurations setted at point 1
+3) generate new configurations
+4) All new tokens will take the configurations of step 3
 
-Create the payload for the jwt with inside the user_id:
-```shell
-curl --location 'http://localhost:8080/as/token.oauth2/payload' \
---header 'Content-Type: application/json' \
---data '{
-  "uuid": "xxxxxxx-47a3-344f-bbb4-xxxxxx"
-}'
-```
-
-Retrieve the jwt:
-```shell
-curl --location --request POST 'http://localhost:8080/as/token.oauth2'
-```
-
-Get user of generated token:
-```shell
-curl --location 'http://localhost:8080/idp/userinfo.openid' \
---header 'Authorization: Bearer ${jwt_of_prev_call}'
-```
-
-Get list of all users in-memory:
-```shell
-curl --location 'http://localhost:8080/userinfo'
-```
+So, the order to get token is important if you want to use multiple users.
 
 ## Api Documentation
 
 You can use Bruno to open our API documentation to start exploring the project : https://www.usebruno.com/
-
-
 
 ## Use DOCKER IMAGE 
 

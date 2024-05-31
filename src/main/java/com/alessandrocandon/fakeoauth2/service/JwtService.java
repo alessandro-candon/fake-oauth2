@@ -13,29 +13,32 @@ public class JwtService {
 
   private final IKeyService iKeyService;
 
-  private final UserService userService;
-
-  public JwtService(UserService userService, IKeyService iKeyService) {
-    this.userService = userService;
+  public JwtService(IKeyService iKeyService) {
     this.iKeyService = iKeyService;
   }
 
   public JwtToken getToken(Map<String, Object> headers) {
 
-    var payload = userService.getJwtPayload();
+    var setUpConfigurationDto = SetUpConfigurationService.getLastConfiguration();
 
-    String jwt =
+    String accessToken =
         JWT.create()
             .withHeader(headers)
-            .withPayload(payload.toPrettyString())
+            .withPayload(setUpConfigurationDto.accessToken().toPrettyString())
+            .sign(iKeyService.getAlgorithm());
+
+    String idToken =
+        JWT.create()
+            .withHeader(headers)
+            .withPayload(setUpConfigurationDto.idToken().toPrettyString())
             .sign(iKeyService.getAlgorithm());
 
     Long exp =
-        payload.findValue("exp") != null
-            ? payload.get("exp").asInt()
+        setUpConfigurationDto.accessToken().findValue("exp") != null
+            ? setUpConfigurationDto.accessToken().get("exp").asInt()
             : Instant.now().getEpochSecond();
 
-    return new JwtToken(jwt, jwt, exp);
+    return new JwtToken(accessToken, idToken, exp);
   }
 
   public String getDecodedPayload(String authorizationHeader) {
