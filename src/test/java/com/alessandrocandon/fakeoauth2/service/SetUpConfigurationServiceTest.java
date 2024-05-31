@@ -3,8 +3,6 @@ package com.alessandrocandon.fakeoauth2.service;
 
 import static com.alessandrocandon.fakeoauth2.service.SetUpConfigurationService.USER_ID_KEY;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.alessandrocandon.fakeoauth2.dto.SetUpConfigurationDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
