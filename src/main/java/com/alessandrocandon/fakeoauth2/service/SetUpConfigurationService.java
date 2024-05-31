@@ -20,13 +20,7 @@ public final class SetUpConfigurationService {
   private SetUpConfigurationService() {}
 
   static {
-    keyIndex = 0;
-    setUpConfigurationDtoHashMap.put(
-        0,
-        new SetUpConfigurationDto(
-            JsonNodeFactory.instance.objectNode(),
-            JsonNodeFactory.instance.objectNode(),
-            JsonNodeFactory.instance.objectNode()));
+    resetConfiguration();
   }
 
   public static SetUpConfigurationDto getLastConfiguration() {
@@ -56,5 +50,15 @@ public final class SetUpConfigurationService {
 
   public static void deleteConfiguration(Integer id) {
     setUpConfigurationDtoHashMap.remove(id);
+  }
+
+  public static void resetConfiguration() {
+    keyIndex = 0;
+    setUpConfigurationDtoHashMap.put(
+            0,
+            new SetUpConfigurationDto(
+                    JsonNodeFactory.instance.objectNode(),
+                    JsonNodeFactory.instance.objectNode(),
+                    JsonNodeFactory.instance.objectNode()));
   }
 }
