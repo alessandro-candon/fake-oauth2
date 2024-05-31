@@ -28,31 +28,31 @@ class UserInfoControllerTest {
                 .content("")
                 .header(
                     HttpHeaders.AUTHORIZATION,
-                        "Bearer " + FileUtil.getResourceFileAsString("fixtures/bearer_0.txt")))
+                    "Bearer " + FileUtil.getResourceFileAsString("fixtures/bearer_0.txt")))
         .andExpect(status().isOk());
   }
 
   @Test
   void testGetUserInfo() throws Exception {
     mockMvc
-            .perform(
-                    get("/idp/userinfo.openid")
-                            .content("")
-                            .header(
-                                    HttpHeaders.AUTHORIZATION,
-                                    "Bearer " + FileUtil.getResourceFileAsString("fixtures/bearer_0.txt")))
-            .andExpect(status().isOk());
+        .perform(
+            get("/idp/userinfo.openid")
+                .content("")
+                .header(
+                    HttpHeaders.AUTHORIZATION,
+                    "Bearer " + FileUtil.getResourceFileAsString("fixtures/bearer_0.txt")))
+        .andExpect(status().isOk());
   }
 
   @Test
   void testDeleteUserInfoFail() throws Exception {
     mockMvc
-            .perform(
-                    delete("/idp/userinfo.openid")
-                            .content("")
-                            .header(
-                                    HttpHeaders.AUTHORIZATION,
-                                    "Bearer " + FileUtil.getResourceFileAsString("fixtures/bearer_0.txt")))
-                            .andExpect(status().is4xxClientError());
+        .perform(
+            delete("/idp/userinfo.openid")
+                .content("")
+                .header(
+                    HttpHeaders.AUTHORIZATION,
+                    "Bearer " + FileUtil.getResourceFileAsString("fixtures/bearer_0.txt")))
+        .andExpect(status().is4xxClientError());
   }
 }

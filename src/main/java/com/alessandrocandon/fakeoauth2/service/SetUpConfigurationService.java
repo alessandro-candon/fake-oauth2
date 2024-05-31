@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ public final class SetUpConfigurationService {
   }
 
   public static Integer getLastKey() {
-    return keyIndex > 0 ? keyIndex-1 : 0;
+    return keyIndex > 0 ? keyIndex - 1 : 0;
   }
 
   public static SetUpConfigurationDto getLastConfiguration() {
@@ -50,13 +49,12 @@ public final class SetUpConfigurationService {
   }
 
   public static void setConfiguration(SetUpConfigurationDto setUpConfigurationDto) {
-    var accessTokenWithId = ((ObjectNode)setUpConfigurationDto.accessToken()).put(USER_ID_KEY, keyIndex);
-    var idTokenWithId = ((ObjectNode)setUpConfigurationDto.idToken()).put(USER_ID_KEY, keyIndex);
-    setUpConfigurationDtoHashMap.put(keyIndex, new SetUpConfigurationDto(
-            setUpConfigurationDto.user(),
-            accessTokenWithId,
-            idTokenWithId
-    ));
+    var accessTokenWithId =
+        ((ObjectNode) setUpConfigurationDto.accessToken()).put(USER_ID_KEY, keyIndex);
+    var idTokenWithId = ((ObjectNode) setUpConfigurationDto.idToken()).put(USER_ID_KEY, keyIndex);
+    setUpConfigurationDtoHashMap.put(
+        keyIndex,
+        new SetUpConfigurationDto(setUpConfigurationDto.user(), accessTokenWithId, idTokenWithId));
     keyIndex = keyIndex + 1;
   }
 
