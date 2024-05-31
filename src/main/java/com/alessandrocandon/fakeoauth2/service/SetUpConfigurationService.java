@@ -6,16 +6,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import java.util.HashMap;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class SetUpConfigurationService {
 
-  public static final String USER_ID_KEY = "user_key_id";
+  public static final String USER_ID_KEY = "fakeoauth2_user_key_id";
   private static int keyIndex;
 
   private static final Map<Integer, SetUpConfigurationDto> setUpConfigurationDtoHashMap =
-      new HashMap<>();
+      new LinkedHashMap<>();
 
   private SetUpConfigurationService() {}
 
@@ -23,8 +25,12 @@ public final class SetUpConfigurationService {
     resetConfiguration();
   }
 
+  public static Integer getLastKey() {
+    return keyIndex > 0 ? keyIndex-1 : 0;
+  }
+
   public static SetUpConfigurationDto getLastConfiguration() {
-    return setUpConfigurationDtoHashMap.get(keyIndex);
+    return setUpConfigurationDtoHashMap.get(getLastKey());
   }
 
   public static SetUpConfigurationDto getConfiguration(Integer id) {
@@ -44,8 +50,14 @@ public final class SetUpConfigurationService {
   }
 
   public static void setConfiguration(SetUpConfigurationDto setUpConfigurationDto) {
-    setUpConfigurationDtoHashMap.put(keyIndex, setUpConfigurationDto);
-    keyIndex++;
+    var accessTokenWithId = ((ObjectNode)setUpConfigurationDto.accessToken()).put(USER_ID_KEY, keyIndex);
+    var idTokenWithId = ((ObjectNode)setUpConfigurationDto.idToken()).put(USER_ID_KEY, keyIndex);
+    setUpConfigurationDtoHashMap.put(keyIndex, new SetUpConfigurationDto(
+            setUpConfigurationDto.user(),
+            accessTokenWithId,
+            idTokenWithId
+    ));
+    keyIndex = keyIndex + 1;
   }
 
   public static void deleteConfiguration(Integer id) {
@@ -53,6 +65,7 @@ public final class SetUpConfigurationService {
   }
 
   public static void resetConfiguration() {
+    setUpConfigurationDtoHashMap.clear();
     keyIndex = 0;
     setUpConfigurationDtoHashMap.put(
         0,
