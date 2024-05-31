@@ -3,13 +3,11 @@ package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.dto.SetUpConfigurationDto;
 import com.alessandrocandon.fakeoauth2.service.SetUpConfigurationService;
-
 import java.util.Map;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class SetUpConfigurationController {
-
 
   @PostMapping("/configurations")
   public void post(@RequestBody SetUpConfigurationDto setUpConfigurationDto) {

@@ -1,3 +1,4 @@
+/* Decathlon Italy - Tacos Team(C) 2024 */
 package com.alessandrocandon.fakeoauth2.common;
 
 import java.io.IOException;

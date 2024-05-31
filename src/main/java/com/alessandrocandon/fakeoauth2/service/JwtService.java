@@ -27,15 +27,14 @@ public class JwtService {
             .withPayload(setUpConfigurationDto.accessToken().toPrettyString())
             .sign(iKeyService.getAlgorithm());
 
-
     String idToken =
-            JWT.create()
-                    .withHeader(headers)
-                    .withPayload(setUpConfigurationDto.idToken().toPrettyString())
-                    .sign(iKeyService.getAlgorithm());
+        JWT.create()
+            .withHeader(headers)
+            .withPayload(setUpConfigurationDto.idToken().toPrettyString())
+            .sign(iKeyService.getAlgorithm());
 
     Long exp =
-            setUpConfigurationDto.accessToken().findValue("exp") != null
+        setUpConfigurationDto.accessToken().findValue("exp") != null
             ? setUpConfigurationDto.accessToken().get("exp").asInt()
             : Instant.now().getEpochSecond();
 

@@ -14,19 +14,20 @@ public final class SetUpConfigurationService {
   public static final String USER_ID_KEY = "user_key_id";
   private static int keyIndex;
 
-  private static final Map<Integer, SetUpConfigurationDto> setUpConfigurationDtoHashMap = new HashMap<>();
+  private static final Map<Integer, SetUpConfigurationDto> setUpConfigurationDtoHashMap =
+      new HashMap<>();
 
   private SetUpConfigurationService() {}
 
   static {
     keyIndex = 0;
-    setUpConfigurationDtoHashMap.put(0, new SetUpConfigurationDto(
+    setUpConfigurationDtoHashMap.put(
+        0,
+        new SetUpConfigurationDto(
             JsonNodeFactory.instance.objectNode(),
             JsonNodeFactory.instance.objectNode(),
-            JsonNodeFactory.instance.objectNode()
-    ));
+            JsonNodeFactory.instance.objectNode()));
   }
-
 
   public static SetUpConfigurationDto getLastConfiguration() {
     return setUpConfigurationDtoHashMap.get(keyIndex);
@@ -36,7 +37,8 @@ public final class SetUpConfigurationService {
     return setUpConfigurationDtoHashMap.get(id);
   }
 
-  public static SetUpConfigurationDto getConfigurationByJwtPayload(String jwtJsonPayload) throws JsonProcessingException {
+  public static SetUpConfigurationDto getConfigurationByJwtPayload(String jwtJsonPayload)
+      throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
     JsonNode jwtPayload = mapper.readTree(jwtJsonPayload);
     int userKey = jwtPayload.get(USER_ID_KEY).asInt();

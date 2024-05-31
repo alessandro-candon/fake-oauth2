@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
@@ -24,7 +23,8 @@ class UtilControllerTest {
   @Test
   void setupConfigurationFullFlow() throws Exception {
     mockMvc
-        .perform(post("/configurations")
+        .perform(
+            post("/configurations")
                 .content(FileUtil.getResourceFileAsString("fixtures/configuration_body.json"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isOk());
@@ -38,12 +38,12 @@ class UtilControllerTest {
         .contains("583c3ac3f38e84297c002546");
 
     mockMvc
-            .perform(get("/configurations/0").contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andReturn()
-            .getResponse()
-            .getContentAsString()
-            .contains("583c3ac3f38e84297c002546");
+        .perform(get("/configurations/0").contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andReturn()
+        .getResponse()
+        .getContentAsString()
+        .contains("583c3ac3f38e84297c002546");
 
     mockMvc
         .perform(delete("/configurations/0").contentType(MediaType.APPLICATION_JSON_VALUE))
