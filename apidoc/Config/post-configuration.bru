@@ -1,0 +1,68 @@
+meta {
+  name: post-configuration
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/configurations
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "user": {
+      "user_id": "583c3ac3f38e84297c002546",
+      "email": "test@test.com",
+      "name": "test@test.com",
+      "given_name": "Hello",
+      "family_name": "Test",
+      "nickname": "test",
+      "last_ip": "94.121.163.63",
+      "logins_count": 15,
+      "email_verified": true
+    },
+    "access_token": {
+      "scope": [
+        "openid",
+        "profile"
+      ],
+      "authorization_details": [],
+      "client_id": "my",
+      "iss": "test.iss.test",
+      "jti": "jit",
+      "sub": "asdasd",
+      "uid": "asdasd",
+      "origin": "asdasd",
+      "iat": 1717063455,
+      "uuid": "asdasdasd",
+      "exp": 1717070655
+    },
+    "id_token": {
+      "user_id": "583c3ac3f38e84297c002546",
+      "email": "test@test.com",
+      "name": "test@test.com",
+      "given_name": "Hello",
+      "family_name": "Test",
+      "nickname": "test",
+      "last_ip": "94.121.163.63",
+      "logins_count": 15,
+      "email_verified": true,
+      "scope": [
+        "openid",
+        "profile"
+      ],
+      "authorization_details": [],
+      "client_id": "my",
+      "iss": "test.iss.test",
+      "jti": "jit",
+      "sub": "asdasd",
+      "uid": "asdasd",
+      "origin": "asdasd",
+      "iat": 1717063455,
+      "uuid": "asdasdasd",
+      "exp": 1717070655
+    }
+  }
+}

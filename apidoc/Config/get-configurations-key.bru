@@ -1,0 +1,15 @@
+meta {
+  name: get-configurations-key
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/configurations/{{key}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  key: 0
+}
