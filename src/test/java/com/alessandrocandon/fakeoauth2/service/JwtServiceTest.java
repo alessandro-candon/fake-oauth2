@@ -44,6 +44,7 @@ class JwtServiceTest {
     this.rsaKeyService = new RSAKeyService(appProperties);
     mockBackEnd = new MockWebServer();
     mockBackEnd.start();
+
   }
 
   @AfterEach
