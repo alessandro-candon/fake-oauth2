@@ -70,8 +70,10 @@ class JwtServiceTest {
 
     mockBackEnd.enqueue(
         new MockResponse()
-            .setBody(FileUtil.getResourceFileAsString("static/jwks.json"))
-            .addHeader("Content-Type", "application/json"));
+            .newBuilder()
+            .body(FileUtil.getResourceFileAsString("static/jwks.json"))
+            .addHeader("Content-Type", "application/json")
+            .build());
 
     Algorithm algorithm =
         Algorithm.RSA256(
