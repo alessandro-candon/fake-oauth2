@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           settings-path: ${{ github.workspace }} # by specifying the path of an already existing file it will avoid overriding
