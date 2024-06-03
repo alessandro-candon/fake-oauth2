@@ -3,6 +3,7 @@ package com.alessandrocandon.fakeoauth2.controller;
 
 import com.alessandrocandon.fakeoauth2.dto.SetUpConfigurationDto;
 import com.alessandrocandon.fakeoauth2.service.SetUpConfigurationService;
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Map;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +28,10 @@ public class SetUpConfigurationController {
   @DeleteMapping("/configurations/{key}")
   public void resetUsers(@PathVariable Integer key) {
     SetUpConfigurationService.deleteConfiguration(key);
+  }
+
+  @PostMapping("/well-known")
+  public void postWellKnown(@RequestBody JsonNode wellKnown) {
+    SetUpConfigurationService.setOAuthWellKnow(wellKnown);
   }
 }

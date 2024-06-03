@@ -14,6 +14,8 @@ public final class SetUpConfigurationService {
 
   public static final String USER_ID_KEY = "fakeoauth2_user_key_id";
   private static int keyIndex;
+  // .well-known/openid-configuration
+  private static JsonNode oAuthWellKnow;
 
   private static final Map<Integer, SetUpConfigurationDto> setUpConfigurationDtoHashMap =
       new LinkedHashMap<>();
@@ -71,5 +73,13 @@ public final class SetUpConfigurationService {
             JsonNodeFactory.instance.objectNode(),
             JsonNodeFactory.instance.objectNode(),
             JsonNodeFactory.instance.objectNode()));
+  }
+
+  public static void setOAuthWellKnow(JsonNode jsonNode) {
+    oAuthWellKnow = jsonNode;
+  }
+
+  public static JsonNode getOAuthWellKnow() {
+    return oAuthWellKnow;
   }
 }
