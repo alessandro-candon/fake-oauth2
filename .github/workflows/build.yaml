@@ -8,6 +8,10 @@ on:
   create:
     tags:
       - "v*.*.*"
+  push:
+    branches:
+      - main
+
 
 env:
   JAVA_VERSION: '21'
@@ -73,7 +77,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests
+          name: digests-${{ github.run_id }}-${{ github.run_number }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -86,7 +90,7 @@ jobs:
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
-          name: digests
+          name: digests-${{ github.run_id }}-${{ github.run_number }}
           path: /tmp/digests
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
