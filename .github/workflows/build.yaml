@@ -17,6 +17,7 @@ env:
   JAVA_VERSION: '21'
   IMAGE: 'fake-oauth2'
   REGISTRY_IMAGE: 'acando14/fake-oauth2'
+  DOCKER_USERNAME: 'acando14'
 
 jobs:
   build:
@@ -50,7 +51,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ env.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push Docker Image
